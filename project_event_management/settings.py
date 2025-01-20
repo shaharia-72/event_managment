@@ -81,7 +81,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'https://*.127.0.0.1',
     'http://*.127.0.0.1',
-    'https://hospital-management-with-rest-api.onrender.com',
+     'https://event-managment-849k.onrender.com',
     "https://127.0.0.1:5500",
     "http://127.0.0.1:5500",
     "https://localhost:5500",
@@ -98,7 +98,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "https://hospital-management-with-rest-api.onrender.com",
+    'https://event-managment-849k.onrender.com',
 ]
 
 TEMPLATES = [
