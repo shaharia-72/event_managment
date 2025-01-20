@@ -1,0 +1,55 @@
+{% extends 'base_profile.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}
+  <title>Update Participant Profile</title>
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-2xl font-semibold mb-6">Update Profile</h1>
+
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Update Profile Form Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Form Fields -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col">
+          <label for="first_name" class="font-medium text-gray-700 font-bold">First Name</label>
+          {{ form.first_name|add_class:'p-2 border rounded bg-gray-100' }}
+        </div>
+        <div class="flex flex-col">
+          <label for="last_name" class="font-medium text-gray-700 font-bold">Last Name</label>
+          {{ form.last_name|add_class:'p-2 border rounded bg-gray-100' }}
+        </div>
+        <div class="flex flex-col">
+          <label for="email" class="font-medium text-gray-700 font-bold">Email</label>
+          {{ form.email|add_class:'p-2 border rounded bg-gray-100' }}
+        </div>
+      </div>
+
+      <!-- Profile Image Field -->
+      <div class="flex flex-col mb-4">
+        <label for="profile_image" class="font-medium text-gray-700 font-bold">Profile Image</label>
+        {{ form.profile_image|add_class:'p-2 border rounded bg-gray-100' }}
+      </div>
+
+      <!-- Save Changes Button -->
+      <button type="submit" class="font-bold bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 mt-6">Save Changes</button>
+    </form>
+  </div>
+
+  {% comment %} <!-- Back to Profile Button -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <a href="{% url 'participant_profile' %}" class="block text-center font-bold bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700">Back to Profile</a>
+  </div> {% endcomment %}
+{% endblock %}

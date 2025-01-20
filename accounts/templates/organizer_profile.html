@@ -1,0 +1,149 @@
+{% extends 'base_profile.html' %} {% block title %}
+  {% load static %}
+  <title>Organizer Profile</title>
+{% endblock %} {% block content %}
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <h1 class="text-2xl font-semibold mb-2">Organizer Profile Details</h1>
+
+  <!-- Profile Details Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col items-center">
+        <label for="organization_image" class="font-medium text-gray-700 font-bold">Profile Image</label>
+        {% if profile.organization_image %}
+          <img src="{{ profile.organization_image.url }}" alt="Profile Image" class="w-40 h-40 object-cover rounded-full" />
+        {% else %}
+          <img src="{% static 'images/user.png' %}" alt="Profile Image" class="w-40 h-40 object-cover rounded-full" />
+        {% endif %}
+      </div>
+      <div class="flex flex-col">
+        <label for="organization_name" class="font-medium text-gray-700 font-bold">Organization Name</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.organization_name }}</p>
+
+        <label for="organization_name" class="font-medium text-gray-700 font-bold">Organization Type</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.organizer_type }}</p>
+
+        <label for="email" class="font-medium text-gray-700 font-bold">Email</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.user.email }}</p>
+
+        <label for="location" class="font-medium text-gray-700 font-bold">Location</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.location }}</p>
+
+        <label class="font-medium text-gray-700 font-bold mt-2">Amount</label> <!-- Reduced margin-top -->
+        <p id="balance" class="p-2 border rounded bg-gray-100">${{ profile.amount|default:0 }}</p>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <label for="description" class="font-medium text-gray-700 font-bold">Description</label>
+      <p class="p-2 border rounded bg-gray-100">{{ profile.description }}</p>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex space-x-4">
+    <a href="{% url 'password_change' %}" class="block text-center font-bold bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800 text-decoration-none">Change Password</a>
+    <a href="{% url 'update_organizer_profile' %}" class="block text-center font-bold bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 text-decoration-none">Update Profile</a>
+    <button id="deposit-btn" class="block text-center font-bold bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">Deposit</button>
+  </div>
+
+  <!-- Deposit Modal -->
+  <div id="deposit-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h2 class="text-xl font-semibold mb-4">Deposit Funds</h2>
+      <label for="amount" class="font-medium text-gray-700">Amount</label>
+      <input type="number" id="deposit-amount" class="w-full p-2 border rounded mb-4" placeholder="Enter Amount" required />
+      <div class="flex justify-between">
+        <button id="close-modal" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Cancel</button>
+        <button id="submit-deposit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">Deposit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="fixed top-4 right-4 hidden p-4 rounded shadow-lg"></div>
+
+  <script>
+    const depositModal = document.getElementById('deposit-modal')
+    const depositBtn = document.getElementById('deposit-btn')
+    const closeModal = document.getElementById('close-modal')
+    const submitDeposit = document.getElementById('submit-deposit')
+    const depositAmount = document.getElementById('deposit-amount')
+    const notification = document.getElementById('notification')
+    const balanceDisplay = document.getElementById('balance')
+    
+    // Open Modal
+    depositBtn.addEventListener('click', () => {
+      depositModal.classList.remove('hidden')
+    })
+    
+    // Close Modal
+    closeModal.addEventListener('click', () => {
+      depositModal.classList.add('hidden')
+    })
+    
+    // Show Notification
+    function showNotification(message, type = 'success') {
+      notification.textContent = message
+      notification.classList.remove('hidden')
+      notification.classList.remove('bg-green-500', 'bg-red-500')
+    
+      if (type === 'success') {
+        notification.classList.add('bg-green-500', 'text-white')
+      } else {
+        notification.classList.add('bg-red-500', 'text-white')
+      }
+    
+      // Auto-hide notification after 3 seconds
+      setTimeout(() => {
+        notification.classList.add('hidden')
+      }, 3000)
+    }
+    
+    // Check URL Parameters for Messages
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.has('success')) {
+      showNotification(urlParams.get('success'), 'success')
+    } else if (urlParams.has('error')) {
+      showNotification(urlParams.get('error'), 'error')
+    }
+    
+    // Handle Deposit
+    submitDeposit.addEventListener('click', () => {
+      const amount = parseFloat(depositAmount.value)
+    
+      if (isNaN(amount) || amount <= 0) {
+        showNotification('Please enter a valid amount.', 'error')
+        return
+      }
+    
+      fetch('/accounts/organizer/deposit/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ amount: amount })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            balanceDisplay.textContent = `$${data.new_balance}`
+            showNotification('Deposit successful!')
+            depositModal.classList.add('hidden') // Close modal
+          } else {
+            showNotification('Deposit failed: ' + data.error, 'error')
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+          showNotification('An error occurred. Please try again.', 'error')
+        })
+    })
+  </script>
+{% endblock %}

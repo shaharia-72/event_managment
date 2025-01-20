@@ -1,0 +1,79 @@
+{% extends 'base_profile.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+  <title>Create Conversation Hall Post</title>
+{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <h2 class="text-center mb-4">Create Conversation Hall Post</h2>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <!-- Display form errors -->
+              {% if form.errors %}
+                <div class="alert alert-danger">
+                  <ul>
+                    {% for field in form %}
+                      {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+
+              <!-- Title Field -->
+              <div class="form-group mb-3">
+                <label for="{{ form.title.id_for_label }}">Title</label>
+                {{ form.title|add_class:'form-control' }}
+              </div>
+
+              <!-- Description Field -->
+              <div class="form-group mb-3">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description|add_class:'form-control' }}
+              </div>
+
+              <!-- Hall Category Field -->
+              <div class="form-group mb-3">
+                <label for="{{ form.hall_category.id_for_label }}">Hall Category</label>
+                {{ form.hall_category|add_class:'form-control' }}
+              </div>
+
+              <!-- Image Field -->
+              <div class="form-group mb-3">
+                <label for="{{ form.images.id_for_label }}">Images</label>
+                {{ form.images|add_class:'form-control' }}
+              </div>
+
+              <!-- Price Per Hour Field -->
+              <div class="form-group mb-3">
+                <label for="{{ form.price_per_hour.id_for_label }}">Price Per Hour</label>
+                {{ form.price_per_hour|add_class:'form-control' }}
+              </div>
+
+              <!-- Submit Button -->
+              <div class="form-group text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

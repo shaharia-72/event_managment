@@ -1,0 +1,40 @@
+<h1>Notifications</h1>
+{% for notification in notifications %}
+  <div class="alert {% if not notification.is_read %}
+      alert-warning
+    {% else %}
+      alert-secondary
+    {% endif %}">
+    <p>{{ notification.message }}</p>
+    {% if not notification.is_read %}
+      <button class="btn btn-sm btn-success" onclick="markAsRead({{ notification.id }})">Mark as read</button>
+    {% endif %}
+  </div>
+{% endfor %}
+
+<script>
+  function markAsRead(notificationId) {
+    fetch(`/notifications/${notificationId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'Content-Type': 'application/json' // Added for better content handling
+      },
+      body: JSON.stringify({
+        notification_id: notificationId
+      })
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Reload the page to reflect the changes
+          location.reload()
+        } else {
+          alert('There was an error marking the notification as read.')
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        alert('There was an error processing your request.')
+      })
+  }
+</script>

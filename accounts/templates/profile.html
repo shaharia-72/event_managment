@@ -1,0 +1,78 @@
+{% extends 'base_profile.html' %} {% load widget_tweaks %} {% block title %}
+  <title>Profile</title>
+{% endblock %} {% block content %}
+  <h1 class="text-2xl font-semibold mb-6">Profile Details</h1>
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Profile Details Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Common User Details -->
+      <div class="flex flex-col">
+        <label for="username" class="font-medium text-gray-700 font-bold">Username</label>
+        <p class="p-2 border rounded bg-gray-100">{{ user.username }}</p>
+      </div>
+      <div class="flex flex-col">
+        <label for="first_name" class="font-medium text-gray-700 font-bold">First Name</label>
+        <p class="p-2 border rounded bg-gray-100">{{ user.first_name }}</p>
+      </div>
+      <div class="flex flex-col">
+        <label for="last_name" class="font-medium text-gray-700 font-bold">Last Name</label>
+        <p class="p-2 border rounded bg-gray-100">{{ user.last_name }}</p>
+      </div>
+      <div class="flex flex-col">
+        <label for="email" class="font-medium text-gray-700 font-bold">Email</label>
+        <p class="p-2 border rounded bg-gray-100">{{ user.email }}</p>
+      </div>
+
+      <!-- Role-Specific Details (Participant or Organizer) -->
+      {% if user.is_participant %}
+        <!-- Participant-specific details -->
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Interested Events</label>
+          <ul class="p-2 border rounded bg-gray-100">
+            {% for event in user.participant.get_interested_events %}
+              <li>{{ event.name }}</li>
+            {% empty %}
+              <li>No interested events</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Profile Image</label>
+          <img src="{{ user.participant.profile_image.url }}" alt="Profile Image" class="w-32 h-32 object-cover border rounded" />
+        </div>
+      {% elif user.is_organizer %}
+        <!-- Organizer-specific details -->
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Organization Name</label>
+          <p class="p-2 border rounded bg-gray-100">{{ user.organizer.organization_name }}</p>
+        </div>
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Location</label>
+          <p class="p-2 border rounded bg-gray-100">{{ user.organizer.location }}</p>
+        </div>
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Description</label>
+          <p class="p-2 border rounded bg-gray-100">{{ user.organizer.description }}</p>
+        </div>
+        <div class="flex flex-col">
+          <label class="font-medium text-gray-700 font-bold">Organization Image</label>
+          <img src="{{ user.organizer.organization_image.url }}" alt="Organization Image" class="w-32 h-32 object-cover border rounded" />
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Update Profile and Change Password Links -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex space-x-4">
+    <a href="{% url 'password_change' %}" class="block text-center font-bold bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800">Change Password</a>
+    <a href="{% url 'profile_update' %}" class="block text-center font-bold bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700">Update Profile</a>
+  </div>
+{% endblock %}

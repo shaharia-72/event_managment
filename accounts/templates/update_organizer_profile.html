@@ -1,0 +1,61 @@
+{% extends 'base_profile.html' %} {% load widget_tweaks %} {% block title %}
+  <title>Profile</title>
+{% endblock %} {% block content %}
+  <h1 class="text-2xl font-semibold mb-6">Update Organizer Profile</h1>
+
+  <!-- Feedback Messages -->
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Profile Update Form Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Profile Image Section -->
+        <div class="flex flex-col items-center">
+          <label for="id_organization_image" class="font-medium text-gray-700 font-bold">Profile Image</label>
+          {% if form.organization_image.value %}
+            <img src="{{ form.organization_image.value.url }}" alt="Profile Image" class="w-40 h-40 object-cover rounded-full mb-4" />
+          {% else %}
+            {% comment %} <img src="{% static '.' %}" alt="Default Profile Image" class="w-40 h-40 object-cover rounded-full mb-4" /> {% endcomment %}
+          {% endif %}
+          <input type="file" name="organization_image" id="id_organization_image" class="mt-2 text-sm text-gray-600" />
+        </div>
+
+        <!-- Text Input Fields -->
+        <div class="flex flex-col">
+          <label for="id_organization_name" class="font-medium text-gray-700 font-bold">Organization Name</label>
+          {{ form.organization_name|add_class:'p-2 border rounded bg-gray-100' }}
+
+          <label for="id_website" class="font-medium text-gray-700 font-bold mt-4">Website</label>
+          {{ form.website|add_class:'p-2 border rounded bg-gray-100' }}
+
+          <label for="id_email" class="font-medium text-gray-700 font-bold mt-4">Email</label>
+          {{ form.email|add_class:'p-2 border rounded bg-gray-100' }}
+
+          <label for="id_location" class="font-medium text-gray-700 font-bold mt-4">Location</label>
+          {{ form.location|add_class:'p-2 border rounded bg-gray-100' }}
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="flex flex-col mt-4">
+        <label for="id_description" class="font-medium text-gray-700 font-bold">Description</label>
+        {{ form.description|add_class:'p-2 border rounded bg-gray-100' }}
+      </div>
+
+      <!-- Save Changes Button -->
+      <button type="submit" class="font-bold bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 mt-6">Save Changes</button>
+    </form>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 flex justify-between mt-4">
+    <a href="{% url 'organizer_profile' %}" class="block text-center font-bold bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700">Cancel</a>
+  </div>
+{% endblock %}

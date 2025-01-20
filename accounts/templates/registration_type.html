@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Register</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    {% if messages %}
+      <div>
+        {% for message in messages %}
+          <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <p>Choose your account type:</p>
+    <a href="{% url 'register_participant' %}">Register as Participant</a>
+    <a href="{% url 'register_organizer' %}">Register as Organizer</a>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+{% extends 'base_profile.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+  <title>Request Admin Approval</title>
+{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="container mt-2">
+    <h2 class="mb-2 text-center text-dark font-weight-bold">Request Admin Approval</h2>
+
+    <div class="row">
+      {% for tag, status in statuses.items %}
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-lg rounded-lg border-0">
+            <div class="card-body text-center">
+              {% comment %} <h4 class="card-title text-uppercase text-dark">{{ tag|title|replace:'_, ' }}</h4>
+              <p class="card-text mb-4 text-muted">Feature: {{ tag|title|replace:'_, ' }}</p> {% endcomment %}
+
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="tag" value="{{ tag }}" />
+                <button type="submit"
+                  name="action"
+                  value="{% if status == 'Approved' %}
+                    
+                    
+                    
+                    
+                    cancel
+
+
+
+
+                  {% elif status == 'Pending' %}
+                    
+                    
+                    
+                    
+                    cancel
+
+
+
+
+                  {% else %}
+                    
+                    
+                    
+                    
+                    send
+
+
+
+
+                  {% endif %}"
+                  class="btn w-100 
+                  {% if status == 'Approved' %}
+                    
+                    
+                    
+                    
+                    
+                    btn-success
+
+
+
+
+
+                  {% elif status == 'Pending' %}
+                    
+                    
+                    
+                    
+                    
+                    btn-warning
+
+
+
+
+
+                  {% else %}
+                    
+                    
+                    
+                    
+                    
+                    btn-secondary
+
+
+
+
+
+                  {% endif %}
+                  btn-lg rounded-pill shadow-sm">
+                  <strong>
+                    {% if status == 'Approved' %}
+                      Cancel Request
+                    {% elif status == 'Pending' %}
+                      Cancel Request
+                    {% else %}
+                      Send Request
+                    {% endif %}
+                  </strong>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    h2 {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .card {
+      background-color: #f8f9fa;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-body {
+      padding: 2.5rem;
+    }
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+    .btn {
+      font-size: 1.2rem;
+      padding: 12px;
+    }
+    .btn-lg {
+      font-size: 1.4rem;
+      padding: 16px;
+    }
+    .rounded-pill {
+      border-radius: 50px !important;
+    }
+  </style>
+{% endblock %}

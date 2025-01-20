@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Register as Participant</title>
+  </head>
+  <body>
+    <h1>Register as Participant</h1>
+    {% if messages %}
+      <div>
+        {% for message in messages %}
+          <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Register</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% block body %}
+  {% load static %}
+  <div class="flex mt-10">
+    <!-- Left side menu -->
+    <aside class="w-1/4 bg-white shadow-md rounded-lg p-4">
+      <ul class="space-y-4">
+        <li>
+          {% if user.is_organizer %}
+            <a href=""
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'Dashboard' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              Dashboard
+            </a>
+          {% elif user.is_participant %}
+            <a href=""
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'my_interest' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              My interest
+            </a>
+          {% endif %}
+        </li>
+        <li>
+          {% if user.is_organizer %}
+            <a href="{% url 'organizer_profile' %}"
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'profile' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              Profile
+            </a>
+            {% comment %}
+          {% elif user.is_participant %}
+            <a href="{% url 'participant_profile' %}"
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'profile' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              Profile
+            </a>
+            {% endcomment %}
+          {% endif %}
+        </li>
+        <li>
+          {% if user.is_organizer %}
+            <a href="{% url 'request_approval' %}"
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'Unlock' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              Unlock
+            </a>
+          {% elif user.is_participant %}
+            <a href="{% url 'participant_profile' %}"
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'profile' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              Profile
+            </a>
+          {% endif %}
+        </li>
+
+        <li></li>
+        {% if user.is_participant %}
+          <a href="{% url 'order_list' %}"
+            class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'My_Oder_List' %}
+              
+               bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+            {% else %}
+              
+               bg-gray-300 text-black font-bold text-decoration-none
+
+            {% endif %}">
+            My Oder List
+          </a>
+        {% endif %}
+
+        <li>
+          {% if user.is_organizer %}
+            <a class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'history' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              History
+            </a>
+          {% elif user.is_participant %}
+            <a href=""
+              class="block text-center font-bold py-2 px-4 rounded-lg transition duration-300 {% if active_page == 'history' %}
+                
+                 bg-blue-700 text-black hover:bg-blue-800 text-decoration-none
+
+              {% else %}
+                
+                 bg-gray-300 text-black font-bold text-decoration-none
+
+              {% endif %}">
+              History
+            </a>
+          {% endif %}
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Right side dynamic content -->
+    <div class="w-3/4 bg-white shadow-md rounded-lg p-6">
+      {% block content %}
+        <!-- Dynamic content goes here -->
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

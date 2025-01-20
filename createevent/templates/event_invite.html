@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block body %}
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Send Invitations</h1>
+
+    <div class="row">
+      <!-- Manual Invitation Form -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h5><i class="bi bi-envelope-fill"></i> Manual Invitation</h5>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="Enter email address" required />
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Enter name" required />
+              </div>
+              <button type="submit" name="manual_invite" class="btn btn-primary"><i class="bi bi-send"></i> Send Invitation</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV Invitation Form -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-info text-white">
+            <h5><i class="bi bi-upload"></i> Upload CSV File</h5>
+          </div>
+          <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="csv_file" class="form-label">Upload CSV</label>
+                <input type="file" class="form-control" name="csv_file" accept=".csv" required />
+                <small class="form-text text-muted">Ensure the CSV has 'Name, Email' columns.</small>
+              </div>
+              <button type="submit" name="csv_invite" class="btn btn-info"><i class="bi bi-cloud-arrow-up"></i> Upload & Invite</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

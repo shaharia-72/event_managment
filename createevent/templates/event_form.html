@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block body %}
+  {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="container mt-5">
+    <h1 class="mb-4 text-center">
+      {% if form.instance.pk %}
+        Update Event
+      {% else %}
+        Create Event
+      {% endif %}
+    </h1>
+
+    <div class="card shadow-lg p-4">
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row g-3">
+          <!-- Title -->
+          <div class="col-md-6">
+            <label for="title" class="form-label">Event Title</label>
+            {{ form.title|add_class:'form-control' }}
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-6">
+            <label for="category" class="form-label">Category</label>
+            {{ form.category|add_class:'form-select' }}
+          </div>
+
+          <!-- Image -->
+          <div class="col-md-12">
+            <label for="image" class="form-label">Event Image</label>
+            {{ form.image|add_class:'form-control' }}
+          </div>
+
+          <!-- Description -->
+          <div class="col-md-12">
+            <label for="description" class="form-label">Description</label>
+            {{ form.description|add_class:'form-control' }}
+          </div>
+
+          <!-- Date & Time -->
+          <div class="col-md-6">
+            <label for="event_date" class="form-label">Event Date</label>
+            {{ form.event_date|add_class:'form-control' }}
+          </div>
+          <div class="col-md-6">
+            <label for="event_time" class="form-label">Event Time</label>
+            {{ form.event_time|add_class:'form-control' }}
+          </div>
+
+          <!-- Registration Period -->
+          <div class="col-md-6">
+            <label for="registration_start" class="form-label">Registration Start</label>
+            {{ form.registration_start|add_class:'form-control' }}
+          </div>
+          <div class="col-md-6">
+            <label for="registration_end" class="form-label">Registration End</label>
+            {{ form.registration_end|add_class:'form-control' }}
+          </div>
+
+          <!-- Ticket Price -->
+          <div class="col-md-6">
+            <label for="ticket_price" class="form-label">Ticket Price ($)</label>
+            {{ form.ticket_price|add_class:'form-control' }}
+          </div>
+
+          <!-- Max Participants -->
+          <div class="col-md-6">
+            <label for="max_participants" class="form-label">Max Participants</label>
+            {{ form.max_participants|add_class:'form-control' }}
+          </div>
+
+          <!-- Visibility -->
+          <div class="col-md-12">
+            <label for="visibility" class="form-label">Visibility</label>
+            {{ form.visibility|add_class:'form-select' }}
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-check-circle"></i> Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

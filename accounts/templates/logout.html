@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container mt-5 text-center">
+    {% if messages %}
+      <div>
+        {% for message in messages %}
+          <div class="p-4 mb-4 text-white rounded {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h2 class="text-success">Logged Out</h2>
+    <p>You have been logged out successfully.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary">Login Again</a>
+  </div>
+{% endblock %}
+{% comment %} {% extends 'base.html' %}
+
+{% block body %}
+
+{% endblock %} {% endcomment %}

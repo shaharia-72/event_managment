@@ -1,0 +1,14 @@
+Django
+django-cors-headers
+django-crispy-forms
+django-environ
+django-filter
+django-phonenumber-field
+django-polymorphic
+django-widget-tweaks
+djangorestframework
+mysql-connector-python
+pillow
+python-dotenv
+requests
+xhtml2pdf
