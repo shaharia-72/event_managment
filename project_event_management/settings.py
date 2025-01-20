@@ -61,6 +61,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.127.0.0.1",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "https://event-managment-849k.onrender.com"
 ]
 
 # Template settings
