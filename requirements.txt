@@ -54,3 +54,7 @@ psycopg2-binary
 xhtml2pdf
 crispy-bootstrap5
 jsonschema
+django-environ
+django-widget-tweaks
+reportlab
+xhtml2pdf
