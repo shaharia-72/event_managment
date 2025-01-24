@@ -17,7 +17,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY", default="unsafe-default-key")
 DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=["event-managment-849k.onrender.com", "localhost", "127.0.0.1"]
+)
 
 # Installed apps
 INSTALLED_APPS = [
